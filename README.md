@@ -1,2 +1,2 @@
-# flowers
-Starter code for SWE 363 PHP modules
+# Flowers
+ Full-stack web application for a Flowers Store.

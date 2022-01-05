@@ -1,21 +1,31 @@
 <?php 
+  $connection = mysqli_connect("localhost", "root", "", "flowers_db" );
+
   include 'inc/header_in.php';
-  require_once('flowers.php');
-  $flowers_array = Flower::getFlowers();
+  include('Flower.php');
+  
+  define("BASE_URL","https://services.hanselandpetal.com/photos/");
+
+  $flower_obj = new Flower(); 
+  $flowers = $flower_obj->getFlowers($connection);
 ?>
 <div class="row">
-<?php foreach($flowers_array as $flower): ?>
+<?php while($row = $flowers->fetch_assoc()): ?>
   <div class="col-md-6 col-lg-4">
     <div class="card">
-      <img src=<?php echo BASE_URL.'/'.$flower["photo"]; ?> class="card-img-top" alt="california_snow.jpg">
+      <img src=<?php echo(BASE_URL.$row["photo"]); ?> class="card-img-top" alt="california_snow.jpg">
       <div class="card-body">
-        <h5 class="card-title"><?php echo $flower["name"]; ?></h5>
-        <h5 class="card-subtitle"><?php echo $flower["price"]; ?></h5>
-        <a href="detail.php" class="btn btn-outline-info">More details</a>
+        <h5 class="card-title"><?php echo $row["name"]; ?></h5>
+        <h5 class="card-subtitle"><?php echo $row["price"]; ?></h5>
+        
+        <form name="<?php echo $flower["productID"];?>" action="detail.php" action="get">
+          <input type="hidden" name="id" value=<?php echo $row["productID"]; ?>>  
+          <input type="submit" name="submit" href="detail.php" class="btn btn-outline-info">
+        <form>
       </div>
     </div>
   </div>
-<?php endforeach; ?>
+<?php endwhile; ?>
 </div>
 
 <?php 
